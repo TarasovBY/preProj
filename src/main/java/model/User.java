@@ -23,4 +23,9 @@ public class User {
         this.name = name;
         this.telephone = telephone;
     }
+
+    public User(String name, String telephone) {
+        this.name = name;
+        this.telephone = telephone;
+    }
 }

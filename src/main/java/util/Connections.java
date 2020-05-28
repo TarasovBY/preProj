@@ -1,10 +1,5 @@
 package util;
-
-import dao.UserDao;
-import model.User;
-
 import java.sql.*;
-import java.util.ArrayList;
 
 public class Connections {
 
