@@ -20,29 +20,76 @@ public class UserDao {
     public List<User> getAllUser() throws SQLException {
         List<User> allUser = new ArrayList<>();
         String sqlAllBankClient = "SELECT * FROM users";
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlAllBankClient);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            allUser.add(new User(resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("telephone")));
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlAllBankClient)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                allUser.add(new User(resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("telephone")));
+            }
+            resultSet.close();
+            return allUser;
         }
-        preparedStatement.close();
-        resultSet.close();
-        return allUser;
+        catch (SQLException e) {
+            return allUser;
+        }
+
+
     }
 
-    public boolean addUser(String name, String telephone) {
+    public boolean addUser(String name, String telephone) throws SQLException {
+        connection.setAutoCommit(false);
+        String sqlAddUser = "INSERT INTO 'preproj'.'users' ('name', 'telephone') VALUES (?, ?)";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlAddUser)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, telephone);
+            preparedStatement.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
+            return true;
+        }
+        catch (SQLException e) {
+            connection.rollback();
+            return false;
+        }
 
-        return true;
     }
 
-    public boolean editUser() {
-        return true;
+    public boolean editUser(User user) throws SQLException {
+        connection.setAutoCommit(false);
+        String sqlEditUser = "UPDATE `preproj`.`users` SET (`name`, `telephone`) " +
+                "WHERE (`id`) VALUES (?, ?, ?)";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlEditUser)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getTelephone());
+            preparedStatement.setInt(3, user.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
+            return true;
+        }
+        catch (SQLException e) {
+            connection.rollback();
+            return false;
+        }
+
     }
 
-    public boolean deleteUser() {
-        return true;
+    public boolean deleteUser(User user) throws SQLException {
+        connection.setAutoCommit(false);
+        String sqlDeleteUser = "DELETE FROM `preproj`.`users` WHERE (`id`) VALUES (?)";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteUser)) {
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
+            return true;
+        }
+        catch (SQLException e) {
+            connection.rollback();
+            return false;
+        }
+
     }
 
 
