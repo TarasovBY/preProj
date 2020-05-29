@@ -1,4 +1,5 @@
 package service;
+
 import dao.UserDao;
 import model.User;
 import util.Connections;
@@ -14,37 +15,33 @@ public class UserService {
     }
 
     public List<User> getAllUsers() throws SQLException {
-        try(Connection connection = Connections.getMysqlConnection()) {
+        try (Connection connection = Connections.getMysqlConnection()) {
             return new UserDao(connection).getAllUser();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new SQLException();
         }
     }
 
     public boolean addUser(User user) throws SQLException {
-        try(Connection connection = Connections.getMysqlConnection()) {
+        try (Connection connection = Connections.getMysqlConnection()) {
             return new UserDao(connection).addUser(user.getName(), user.getTelephone());
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             return false;
         }
     }
 
     public boolean editUser(User user) throws SQLException {
-        try(Connection connection = Connections.getMysqlConnection()) {
+        try (Connection connection = Connections.getMysqlConnection()) {
             return new UserDao(connection).editUser(user);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             return false;
         }
     }
 
     public boolean deleteUser(User user) throws SQLException {
-        try(Connection connection = Connections.getMysqlConnection()) {
+        try (Connection connection = Connections.getMysqlConnection()) {
             return new UserDao(connection).deleteUser(user);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             return false;
         }
     }
