@@ -13,9 +13,9 @@ import java.sql.SQLException;
 public class ServletAddUser extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            UserService userService = new UserService();
+            UserService userService = UserService.getInstance();
             User user = new User(req.getParameter("name"), req.getParameter("telephone"));
-            userService.addUser(user);
+            userService.addUserHibernate(user);
             resp.sendRedirect("/");
         } catch (SQLException e) {
             e.printStackTrace();

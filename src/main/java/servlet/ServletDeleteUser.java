@@ -16,11 +16,11 @@ public class ServletDeleteUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            UserService userService = new UserService();
+            UserService userService = UserService.getInstance();
             User user = new User(Integer.parseInt(req.getParameter("id")),
                     req.getParameter("name"),
                     req.getParameter("telephone"));
-            userService.deleteUser(user);
+            userService.deleteUserHibernate(user);
             resp.sendRedirect("/");
         } catch (SQLException e) {
             e.printStackTrace();
