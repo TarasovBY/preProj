@@ -1,6 +1,6 @@
 package servlet;
 
-import service.UserService;
+import service.Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +14,9 @@ import java.sql.SQLException;
 public class ServletCrud extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService userService = UserService.getInstance();
+        Service service = Service.getInstance();
         try {
-            req.setAttribute("users", userService.getAllUsersHibernate());
+            req.setAttribute("users", service.getAllUsers());
         } catch (SQLException e) {
             e.printStackTrace();
         }

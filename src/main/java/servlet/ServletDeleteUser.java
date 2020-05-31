@@ -1,9 +1,8 @@
 package servlet;
 
 import model.User;
-import service.UserService;
+import service.Service;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +15,11 @@ public class ServletDeleteUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            UserService userService = UserService.getInstance();
+            Service service = Service.getInstance();
             User user = new User(Integer.parseInt(req.getParameter("id")),
                     req.getParameter("name"),
                     req.getParameter("telephone"));
-            userService.deleteUserHibernate(user);
+            service.deleteUser(user);
             resp.sendRedirect("/");
         } catch (SQLException e) {
             e.printStackTrace();

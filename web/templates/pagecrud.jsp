@@ -51,7 +51,7 @@
                 <input type="text" name="telephone" value="Телефон юзера">
             </td>
             <td>
-            <input type="submit" value="Добавить юзера"></td>
+                <input type="submit" value="Добавить юзера"></td>
         </tr>
     </form>
 </table>

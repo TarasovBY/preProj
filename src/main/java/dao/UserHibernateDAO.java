@@ -3,10 +3,11 @@ package dao;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserHibernateDAO implements UserDAO{
+public class UserHibernateDAO implements UserDAO {
 
     private Session session;
 
@@ -27,8 +28,7 @@ public class UserHibernateDAO implements UserDAO{
             session.save(new User(name, telephone));
             transaction.commit();
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             transaction.rollback();
             return false;
         }
@@ -38,12 +38,11 @@ public class UserHibernateDAO implements UserDAO{
 
     public boolean editUser(User user) throws SQLException {
         Transaction transaction = session.beginTransaction();
-        try{
+        try {
             session.update(user);
             transaction.commit();
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             transaction.rollback();
             return false;
         }
@@ -57,8 +56,7 @@ public class UserHibernateDAO implements UserDAO{
             int result = session.createQuery("delete User where id = " + user.getId()).executeUpdate();
             transaction.commit();
             return result > 0;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             transaction.rollback();
             return false;
         }

@@ -1,7 +1,8 @@
 package servlet;
 
 import model.User;
-import service.UserService;
+import service.Service;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +14,9 @@ import java.sql.SQLException;
 public class ServletAddUser extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            UserService userService = UserService.getInstance();
+            Service service = Service.getInstance();
             User user = new User(req.getParameter("name"), req.getParameter("telephone"));
-            userService.addUserHibernate(user);
+            service.addUser(user);
             resp.sendRedirect("/");
         } catch (SQLException e) {
             e.printStackTrace();

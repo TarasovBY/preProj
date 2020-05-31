@@ -1,16 +1,31 @@
 package util;
+
 import model.User;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-import java.sql.*;
-
-public class Connections {
+public class DBHelper {
 
     private static SessionFactory sessionFactory;
+
+    private static DBHelper dbHelper;
+
+    private DBHelper() {
+
+    }
+
+    public static DBHelper getInstance() {
+        if(dbHelper == null){
+            dbHelper = new DBHelper();
+        }
+        return dbHelper;
+    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
@@ -19,7 +34,7 @@ public class Connections {
         return sessionFactory;
     }
 
-    public static Connection getMysqlConnection() {
+    public static Connection getConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
             StringBuilder url = new StringBuilder();
@@ -41,7 +56,7 @@ public class Connections {
         }
     }
 
-    public static Configuration getMySqlConfiguration() {
+    public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
@@ -56,11 +71,10 @@ public class Connections {
     }
 
     private static SessionFactory createSessionFactory() {
-        Configuration configuration = getMySqlConfiguration();
+        Configuration configuration = getConfiguration();
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
-
 }
