@@ -3,10 +3,7 @@ package service;
 import dao.UserHibernateDAO;
 import dao.UserJdbcDAO;
 import model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import util.Connections;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,88 +11,63 @@ public class UserService {
 
     private static UserService userService;
 
-    private SessionFactory sessionFactory;
+    private UserService() {
 
-
-    private UserService(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
     }
 
     public static UserService getInstance() {
         if (userService == null) {
-            userService = new UserService(Connections.getSessionFactory());
+            userService = new UserService();
         }
         return userService;
     }
 
-    public UserService() {
-
-    }
-
     public List<User> getAllUsers() throws SQLException {
-        try (Connection connection = Connections.getMysqlConnection()) {
-            return new UserJdbcDAO(connection).getAllUser();
-        } catch (SQLException e) {
-            throw new SQLException();
-        }
+
+        return new UserJdbcDAO(Connections.getMysqlConnection()).getAllUser();
+
     }
 
     public boolean addUser(User user) throws SQLException {
-        try (Connection connection = Connections.getMysqlConnection()) {
-            return new UserJdbcDAO(connection).addUser(user.getName(), user.getTelephone());
-        } catch (SQLException e) {
-            return false;
-        }
+
+        return new UserJdbcDAO(Connections.getMysqlConnection()).addUser(user.getName(), user.getTelephone());
+
     }
 
     public boolean editUser(User user) throws SQLException {
-        try (Connection connection = Connections.getMysqlConnection()) {
-            return new UserJdbcDAO(connection).editUser(user);
-        } catch (SQLException e) {
-            return false;
-        }
+
+        return new UserJdbcDAO(Connections.getMysqlConnection()).editUser(user);
+
     }
 
     public boolean deleteUser(User user) throws SQLException {
-        try (Connection connection = Connections.getMysqlConnection()) {
-            return new UserJdbcDAO(connection).deleteUser(user);
-        } catch (SQLException e) {
-            return false;
-        }
+
+        return new UserJdbcDAO(Connections.getMysqlConnection()).deleteUser(user);
+
     }
 
-    /// тут начинается хиберней
-
     public List<User> getAllUsersHibernate() throws SQLException {
-        try (Session session = Connections.getSessionFactory().openSession()) {
-            return new UserHibernateDAO(session).getAllUser();
-        } catch (SQLException e) {
-            throw new SQLException();
-        }
+
+        return new UserHibernateDAO(Connections.getSessionFactory()).getAllUser();
+
     }
 
     public boolean addUserHibernate(User user) throws SQLException {
-        try (Session session = Connections.getSessionFactory().openSession()) {
-            return new UserHibernateDAO(session).addUser(user.getName(), user.getTelephone());
-        } catch (SQLException e) {
-            return false;
-        }
+
+        return new UserHibernateDAO(Connections.getSessionFactory()).addUser(user.getName(), user.getTelephone());
+
     }
 
     public boolean editUserHibernate(User user) throws SQLException {
-        try (Session session = Connections.getSessionFactory().openSession()) {
-            return new UserHibernateDAO(session).editUser(user);
-        } catch (SQLException e) {
-            return false;
-        }
+
+        return new UserHibernateDAO(Connections.getSessionFactory()).editUser(user);
+
     }
 
     public boolean deleteUserHibernate(User user) throws SQLException {
-        try (Session session = Connections.getSessionFactory().openSession()) {
-            return new UserHibernateDAO(session).deleteUser(user);
-        } catch (SQLException e) {
-            return false;
-        }
+
+        return new UserHibernateDAO(Connections.getSessionFactory()).deleteUser(user);
+
     }
 
 }

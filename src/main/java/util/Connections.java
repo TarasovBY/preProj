@@ -12,11 +12,33 @@ public class Connections {
 
     private static SessionFactory sessionFactory;
 
+    private static Connection connection;
+
+    private static Connections connections;
+
+    private Connections() {
+
+    }
+
+    public static Connections getInstance() {
+        if(connections == null){
+            connections = new Connections();
+        }
+        return connections;
+    }
+
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             sessionFactory = createSessionFactory();
         }
         return sessionFactory;
+    }
+
+    public static Connection getConnectionJDBS() {
+        if (connection == null) {
+            connection = getMysqlConnection();
+        }
+        return connection;
     }
 
     public static Connection getMysqlConnection() {

@@ -28,8 +28,10 @@ public class UserJdbcDAO implements UserDAO{
                         resultSet.getString("telephone")));
             }
             resultSet.close();
+            connection.close();
             return allUser;
         } catch (SQLException e) {
+            connection.close();
             return allUser;
         }
 
@@ -45,9 +47,11 @@ public class UserJdbcDAO implements UserDAO{
             preparedStatement.executeUpdate();
             connection.commit();
             connection.setAutoCommit(true);
+            connection.close();
             return true;
         } catch (SQLException e) {
             connection.rollback();
+            connection.close();
             return false;
         }
 
@@ -63,9 +67,11 @@ public class UserJdbcDAO implements UserDAO{
             preparedStatement.executeUpdate();
             connection.commit();
             connection.setAutoCommit(true);
+            connection.close();
             return true;
         } catch (SQLException e) {
             connection.rollback();
+            connection.close();
             return false;
         }
 
@@ -79,9 +85,11 @@ public class UserJdbcDAO implements UserDAO{
             preparedStatement.executeUpdate();
             connection.commit();
             connection.setAutoCommit(true);
+            connection.close();
             return true;
         } catch (SQLException e) {
             connection.rollback();
+            connection.close();
             return false;
         }
 
