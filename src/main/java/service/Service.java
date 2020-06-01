@@ -2,6 +2,7 @@ package service;
 
 import dao.UserDaoFactory;
 import model.User;
+import util.PropertyReader;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,25 +25,25 @@ public class Service {
 
     public List<User> getAllUsers() throws SQLException {
 
-        return new UserDaoFactory().createDAO().getAllUser();
+        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).getAllUser();
 
     }
 
     public boolean addUser(User user) throws SQLException {
 
-        return new UserDaoFactory().createDAO().addUser(user.getName(), user.getTelephone());
+        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).addUser(user.getName(), user.getTelephone());
 
     }
 
     public boolean editUser(User user) throws SQLException {
 
-        return new UserDaoFactory().createDAO().editUser(user);
+        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).editUser(user);
 
     }
 
     public boolean deleteUser(User user) throws SQLException {
 
-        return new UserDaoFactory().createDAO().deleteUser(user);
+        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).deleteUser(user);
 
     }
 

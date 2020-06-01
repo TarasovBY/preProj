@@ -2,33 +2,22 @@ package dao;
 
 import util.DBHelper;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class UserDaoFactory {
 
-    public UserDAO createDAO() {
+    public UserDAO createDAO(Map<String, String> properties) {
 
         UserDAO userDao = null;
-        Properties property = new Properties();
 
-        try {
-
-            InputStream input = getClass().getClassLoader().getResourceAsStream(".properties");
-            property.load(input);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String properties = property.getProperty("daotype");
-        switch (properties) {
+        switch (properties.get("daoype")) {
             case "UserHibernateDao":
-                userDao = new UserHibernateDAO(DBHelper.getSessionFactory().openSession());
+                userDao = new UserHibernateDAO(DBHelper.getSessionFactory());
                 break;
             case "UserJdbcDAO":
-                userDao = new UserJdbcDAO(DBHelper.getConnection());
+                userDao = new UserJdbcDAO(DBHelper.getConnectionJDBS());
                 break;
         }
 

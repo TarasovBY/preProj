@@ -14,6 +14,8 @@ public class DBHelper {
 
     private static SessionFactory sessionFactory;
 
+    private static Connection connection;
+
     private static DBHelper dbHelper;
 
     private DBHelper() {
@@ -34,22 +36,18 @@ public class DBHelper {
         return sessionFactory;
     }
 
+    public static Connection getConnectionJDBS() {
+        if(connection == null) {
+            connection = getConnection();
+        }
+        return connection;
+    }
+
     public static Connection getConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
-            StringBuilder url = new StringBuilder();
 
-            url.
-                    append("jdbc:mysql://").        //db type
-                    append("localhost:").           //host name
-                    append("3306/").                //port
-                    append("preproj?").          //db name
-                    append("user=root&").          //login
-                    append("password=Q2969696Q");       //password
-
-            System.out.println("URL: " + url + "\n");
-
-            return DriverManager.getConnection(url.toString());
+            return DriverManager.getConnection(PropertyReader.getProperties().get("jdbsurl"));
         } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new IllegalStateException();
@@ -60,13 +58,13 @@ public class DBHelper {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/preproj");
-        configuration.setProperty("hibernate.connection.username", "root");
-        configuration.setProperty("hibernate.connection.password", "Q2969696Q");
-        configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        configuration.setProperty("hibernate.dialect", PropertyReader.getProperties().get("hdialect"));
+        configuration.setProperty("hibernate.connection.driver_class", PropertyReader.getProperties().get("hcondriverclass"));
+        configuration.setProperty("hibernate.connection.url", PropertyReader.getProperties().get("hconurl"));
+        configuration.setProperty("hibernate.connection.username", PropertyReader.getProperties().get("hconusername"));
+        configuration.setProperty("hibernate.connection.password", PropertyReader.getProperties().get("hconpassword"));
+        configuration.setProperty("hibernate.show_sql", PropertyReader.getProperties().get("hshowsql"));
+        configuration.setProperty("hibernate.hbm2ddl.auto", PropertyReader.getProperties().get("hhbm2ddlauto"));
         return configuration;
     }
 
