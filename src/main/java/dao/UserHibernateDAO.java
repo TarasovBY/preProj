@@ -18,11 +18,10 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     public List<User> getAllUser() throws SQLException {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             return (List<User>) session.createQuery("from User").list();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
@@ -32,7 +31,7 @@ public class UserHibernateDAO implements UserDAO {
 
 
     public boolean addUser(String name, String telephone) throws SQLException {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
                 session.save(new User(name, telephone));
@@ -42,8 +41,7 @@ public class UserHibernateDAO implements UserDAO {
                 transaction.rollback();
                 return false;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -52,7 +50,7 @@ public class UserHibernateDAO implements UserDAO {
 
 
     public boolean editUser(User user) throws SQLException {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
                 session.update(user);
@@ -62,8 +60,7 @@ public class UserHibernateDAO implements UserDAO {
                 transaction.rollback();
                 return false;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -72,7 +69,7 @@ public class UserHibernateDAO implements UserDAO {
 
 
     public boolean deleteUser(User user) throws SQLException {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
                 int result = session.createQuery("delete User where id = " + user.getId()).executeUpdate();
@@ -82,10 +79,42 @@ public class UserHibernateDAO implements UserDAO {
                 transaction.rollback();
                 return false;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public boolean searchUser(String name, String password) {
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                int result = session.createQuery("SELECT COUNT(*) as count FROM User " +
+                        "where name =" + name + " and password =" + password).executeUpdate();
+                return result > 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public User returnUser(String name, String password) {
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                return (User)session.createQuery("SELECT name =" + name +", " +
+                        "password =" + password +" FROM User").list().get(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new User();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new User();
         }
     }
 }

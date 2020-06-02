@@ -47,4 +47,12 @@ public class Service {
 
     }
 
+    public boolean searchUser(String name, String password) throws SQLException {
+        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).searchUser(name, password);
+    }
+
+    public User returnUser(String name, String password) throws SQLException {
+        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).returnUser(name, password);
+    }
+
 }

@@ -15,4 +15,8 @@ public interface UserDAO {
 
     boolean deleteUser(User user) throws SQLException;
 
+    boolean searchUser(String name, String password) throws SQLException;
+
+    public User returnUser(String name, String password) throws SQLException;
+
 }

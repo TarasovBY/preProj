@@ -23,4 +23,5 @@ public class ServletCrud extends HttpServlet {
         req.getRequestDispatcher("templates/pagecrud.jsp").forward(req, resp);
     }
 
+
 }
