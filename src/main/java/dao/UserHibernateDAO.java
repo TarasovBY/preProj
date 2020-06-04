@@ -88,8 +88,8 @@ public class UserHibernateDAO implements UserDAO {
     public boolean searchUser(String name, String password) {
         try (Session session = sessionFactory.openSession()) {
             try {
-                int result = session.createQuery("SELECT COUNT(*) as count FROM User " +
-                        "where name =" + name + " and password =" + password).executeUpdate();
+                int result = session.createQuery("FROM User where name = '" + name + "'"
+                        + " and password='" + password + "'").list().size();
                 return result > 0;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -105,8 +105,10 @@ public class UserHibernateDAO implements UserDAO {
     public User returnUser(String name, String password) {
         try (Session session = sessionFactory.openSession()) {
             try {
-                return (User)session.createQuery("SELECT name =" + name +", " +
-                        "password =" + password +" FROM User").list().get(0);
+                User user = (User)session.createQuery("FROM User where name = '" + name + "'"
+                        + " and password='" + password + "'").list().get(0);
+
+                return session.get(User.class, user.getId());
             } catch (Exception e) {
                 e.printStackTrace();
                 return new User();

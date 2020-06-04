@@ -1,13 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page session="false" %>
+
 <html>
 <head>
     <title>Tarasov CRUD</title>
 </head>
 <body>
 
-<h1>Задача 1.1.4</h1>
+<h1>Страница Админа</h1>
 <table border="3">
     <tr>
         <td>Айди</td>

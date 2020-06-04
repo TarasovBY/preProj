@@ -88,4 +88,14 @@ public class UserJdbcDAO implements UserDAO {
     }
 
 
+    public boolean searchUser(String name, String password) throws SQLException {
+        return false;
+    }
+
+
+    public User returnUser(String name, String password) throws SQLException {
+        return null;
+    }
+
+
 }

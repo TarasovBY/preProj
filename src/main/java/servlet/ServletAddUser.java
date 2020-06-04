@@ -17,7 +17,7 @@ public class ServletAddUser extends HttpServlet {
             Service service = Service.getInstance();
             User user = new User(req.getParameter("name"), req.getParameter("telephone"));
             service.addUser(user);
-            resp.sendRedirect("/");
+            resp.sendRedirect("/admin");
         } catch (SQLException e) {
             e.printStackTrace();
         }

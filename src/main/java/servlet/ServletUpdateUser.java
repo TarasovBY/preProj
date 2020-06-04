@@ -20,7 +20,7 @@ public class ServletUpdateUser extends HttpServlet {
                     req.getParameter("name"),
                     req.getParameter("telephone"));
             service.editUser(user);
-            resp.sendRedirect("/");
+            resp.sendRedirect("/admin");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -20,7 +20,7 @@ public class ServletDeleteUser extends HttpServlet {
                     req.getParameter("name"),
                     req.getParameter("telephone"));
             service.deleteUser(user);
-            resp.sendRedirect("/");
+            resp.sendRedirect("/admin");
         } catch (SQLException e) {
             e.printStackTrace();
         }

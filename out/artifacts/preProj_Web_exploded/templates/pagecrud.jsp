@@ -1,12 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Tarasov CRUD</title>
 </head>
 <body>
 
-<h1>Задача 1.1.2</h1>
+<h1>Страница Админа</h1>
 <table border="3">
     <tr>
         <td>Айди</td>
@@ -51,7 +52,7 @@
                 <input type="text" name="telephone" value="Телефон юзера">
             </td>
             <td>
-            <input type="submit" value="Добавить юзера"></td>
+                <input type="submit" value="Добавить юзера"></td>
         </tr>
     </form>
 </table>

@@ -16,22 +16,39 @@ import java.sql.SQLException;
 public class ServletLogin extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher("templates/pagelogin.jsp").forward(req, resp);
+        HttpSession session = req.getSession();
+
+        if (session.getAttribute("admin") != null) {
+            resp.sendRedirect("/admin");
+        } else if (session.getAttribute("user") != null) {
+            resp.sendRedirect("/user");
+        } else {
+            req.getRequestDispatcher("templates/pagelogin.jsp").forward(req, resp);
+        }
+
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             Service service = Service.getInstance();
-            if(service.searchUser(req.getParameter("name"), req.getParameter("password"))) {
+            if (service.searchUser(req.getParameter("name"), req.getParameter("password"))) {
                 User user = service.returnUser(req.getParameter("name"), req.getParameter("password"));
-                req.getSession(true);
                 HttpSession session = req.getSession();
-                session.setAttribute("role", user.getRole());
 
+                if (user.getRole().equals("admin")) {
+                    session.setAttribute("admin", user.getRole());
+                    resp.sendRedirect("/admin");
+                } else {
+                    session.setAttribute("user", user.getRole());
+                    resp.sendRedirect("/user");
+                }
+
+
+            } else {
+                resp.sendRedirect("/login");
             }
-
-            resp.sendRedirect("/");
         } catch (SQLException e) {
+            resp.sendRedirect("/login");
             e.printStackTrace();
         }
     }
