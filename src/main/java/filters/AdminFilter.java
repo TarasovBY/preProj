@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter("/admin/*")
-public class UserFilter implements Filter {
+public class AdminFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -20,16 +20,14 @@ public class UserFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-
-        boolean userUser = session.getAttribute("user") != null;
-        String url = httpRequest.getRequestURI();
-
-        if (userUser && url.contains("admin")) {
-            httpServletResponse.sendRedirect("/user");
+        try{
+            if (session.getAttribute("role").equals("admin")) {
+                filterChain.doFilter(request, response);
+            } else {
+                httpServletResponse.sendRedirect("/login");
+            }
         }
-        else if (session.getAttribute("admin") != null) {
-            filterChain.doFilter(request, response);
-        } else {
+        catch (Exception e) {
             httpServletResponse.sendRedirect("/login");
         }
 

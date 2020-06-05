@@ -16,15 +16,7 @@ import java.sql.SQLException;
 public class ServletLogin extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        HttpSession session = req.getSession();
-
-        if (session.getAttribute("admin") != null) {
-            resp.sendRedirect("/admin");
-        } else if (session.getAttribute("user") != null) {
-            resp.sendRedirect("/user");
-        } else {
-            req.getRequestDispatcher("templates/pagelogin.jsp").forward(req, resp);
-        }
+        req.getRequestDispatcher("templates/pagelogin.jsp").forward(req, resp);
 
     }
 
@@ -36,20 +28,19 @@ public class ServletLogin extends HttpServlet {
                 HttpSession session = req.getSession();
 
                 if (user.getRole().equals("admin")) {
-                    session.setAttribute("admin", user.getRole());
+                    session.setAttribute("role", user.getRole());
                     resp.sendRedirect("/admin");
                 } else {
-                    session.setAttribute("user", user.getRole());
+                    session.setAttribute("role", user.getRole());
                     resp.sendRedirect("/user");
                 }
-
-
             } else {
                 resp.sendRedirect("/login");
             }
         } catch (SQLException e) {
-            resp.sendRedirect("/login");
             e.printStackTrace();
+            resp.sendRedirect("/login");
+
         }
     }
 }

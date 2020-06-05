@@ -44,13 +44,14 @@ public class UserJdbcDAO implements UserDAO {
             preparedStatement.setString(2, telephone);
             preparedStatement.executeUpdate();
             connection.commit();
-            connection.setAutoCommit(true);
             return true;
         } catch (SQLException e) {
             connection.rollback();
             return false;
         }
-
+        finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     public boolean editUser(User user) throws SQLException {
@@ -62,11 +63,13 @@ public class UserJdbcDAO implements UserDAO {
             preparedStatement.setInt(3, user.getId());
             preparedStatement.executeUpdate();
             connection.commit();
-            connection.setAutoCommit(true);
             return true;
         } catch (SQLException e) {
             connection.rollback();
             return false;
+        }
+        finally {
+            connection.setAutoCommit(true);
         }
 
     }
@@ -78,11 +81,13 @@ public class UserJdbcDAO implements UserDAO {
             preparedStatement.setInt(1, user.getId());
             preparedStatement.executeUpdate();
             connection.commit();
-            connection.setAutoCommit(true);
             return true;
         } catch (SQLException e) {
             connection.rollback();
             return false;
+        }
+        finally {
+            connection.setAutoCommit(true);
         }
 
     }

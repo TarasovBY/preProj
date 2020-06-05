@@ -1,5 +1,6 @@
 package service;
 
+import dao.UserDAO;
 import dao.UserDaoFactory;
 import model.User;
 import util.PropertyReader;
@@ -10,6 +11,7 @@ import java.util.List;
 public class Service {
 
     private static Service service;
+    private static UserDAO userDao;
 
     private Service() {
 
@@ -18,9 +20,13 @@ public class Service {
     public static Service getInstance() {
         if (service == null) {
             service = new Service();
+            userDao = new UserDaoFactory().
+                    createDAO(PropertyReader.getProperties());
         }
         return service;
     }
+
+
 
 
     public List<User> getAllUsers() throws SQLException {
@@ -31,28 +37,28 @@ public class Service {
 
     public boolean addUser(User user) throws SQLException {
 
-        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).addUser(user.getName(), user.getTelephone());
+        return userDao.addUser(user.getName(), user.getTelephone());
 
     }
 
     public boolean editUser(User user) throws SQLException {
 
-        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).editUser(user);
+        return userDao.editUser(user);
 
     }
 
     public boolean deleteUser(User user) throws SQLException {
 
-        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).deleteUser(user);
+        return userDao.deleteUser(user);
 
     }
 
     public boolean searchUser(String name, String password) throws SQLException {
-        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).searchUser(name, password);
+        return userDao.searchUser(name, password);
     }
 
     public User returnUser(String name, String password) throws SQLException {
-        return new UserDaoFactory().createDAO(PropertyReader.getProperties()).returnUser(name, password);
+        return userDao.returnUser(name, password);
     }
 
 }

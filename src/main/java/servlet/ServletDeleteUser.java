@@ -17,8 +17,7 @@ public class ServletDeleteUser extends HttpServlet {
         try {
             Service service = Service.getInstance();
             User user = new User(Integer.parseInt(req.getParameter("id")),
-                    req.getParameter("name"),
-                    req.getParameter("telephone"));
+                    req.getParameter("name"));
             service.deleteUser(user);
             resp.sendRedirect("/admin");
         } catch (SQLException e) {
